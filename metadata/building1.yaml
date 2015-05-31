@@ -1,0 +1,723 @@
+instance: 1   # this is the only building in the dataset
+original_name: house_1   # Only 1 house
+energy_improvements: [loft insulation, solid wall insulation, double glazing]
+heating: [natural gas]
+instance: 1
+n_occupants: 3
+ownership: bought
+building_type: detached
+construction_year: 1970
+description: 'Family home'
+description_of_occupants: 2 adults and 1 teenager.
+timeframe: {start: '2013-09-26T16:51:45+00:00', end: '2013-12-03T23:56:12+00:00'}
+
+rooms:
+- {floor: 0, name: lounge}
+- {floor: 0, name: hall}
+- {floor: 0, name: kitchen}
+- {floor: 0, name: utility}
+- {floor: 0, name: dining room}
+- {floor: 0, name: family room}
+- {floor: 0, name: wc}
+- {floor: 0, name: garage}
+- {floor: 0, name: shed}
+- {floor: 0, name: greenhouse}
+- {floor: 1, instance: 1, name: bedroom, description: master bedroom}
+- {floor: 1, instance: 2, name: bedroom, description: guest bedroom}
+- {floor: 1, instance: 3, name: bedroom, description: teenagers bedroom}
+- {floor: 1, instance: 4, name: bedroom, description: spare bedroom}
+- {floor: 1, name: study}
+- {floor: 1, instance: 1, name: bathroom, description: ensuite}
+- {floor: 1, instance: 2, name: bathroom, description: family bathroom }
+- {floor: 1, name: landing}
+
+elec_meters:
+  1:
+    site_meter: true
+    submeter_of: 0
+    device_model: ED01013  # keys into meter_devices dictionary
+    data_location: house_1/channel_1.dat
+
+appliances:
+#
+#  Utility room
+#
+- original_name: Washer
+  description: 
+    Programme selector(Temperature), Load size in kg, Water in litres, Energy in kWh
+    COTTONS/LINEN, 95, 6, 62, 2.20
+    ENERGY SAVING, 6, 45, 1.02
+    COTTONS/LINEN, 40, 6, 58, 0.70
+    EASY-CARES, 40, 3, 58, 0.52
+    DELICATES, 30, 3, 58, 0.42
+    WOOL/SILK(Hand-washing), 30, 2, 54, 0.35
+  manufacturer: AEG
+  brand: Lavamat
+  model: 76810
+  type: washing machine
+  room: utility
+  meters: [1] 
+  efficiency_rating:
+    rating: A
+  nominal_consumption:
+    energy_per_year 1020  
+  on_power_threshold: 520
+  instance: 1
+  year_of_purchase: 2006
+  dates_active: {start:  '2006-04-18'}
+  
+- original_name: Dryer
+  description: Vented. Energy rating C. Capacity 7.5kg cotton, 3kg polycotton.
+    Features Woolmark approved; delay start; child lock; power saving feature - goes off after 30 mins
+    Programmes Sensor and timed drying
+    Cottons  ready to wear, cupboard dry, hanger dry, iron dry; synthetics  cupboard dry;
+    specials  bed and bath; delicates; wool; airing; easy iron and cool tumble.
+  manufacturer: Indesit
+  brand: Hotpoint Aquarius Plus
+  model: TVF770P
+  type: tumble dryer
+  room: utility
+  meters: [1] 
+  nominal_consumption: 
+  on_power_threshold: 
+  instance: 1
+  year_of_purchase: 2011
+  dates_active:
+  
+- original_name: Freezer
+  description: A+ 310 kwh per year
+  manufacturer: AEG
+  brand: Arctis
+  model: 75278GA
+  type: freezer
+  room: utility
+  meters: [1] 
+  efficiency_rating:
+    rating: A+
+  nominal_consumption:
+    energy_per_year: 310  
+  on_power_threshold: 
+  instance: 1
+  year_of_purchase: 2007
+  dates_active:
+  
+- original_name: Central_Heating_Boiler
+  description: Gas fired central heating boiler
+  manufacturer: Baxi
+  brand: Solo powered flue
+  model: WM70/4PF
+  type: boiler
+  subtype: system
+  additional_properties:
+    fuel: natural gas
+  room: utility
+  meters: [1] 
+  nominal_consumption: 
+  on_power_threshold: 
+  instance: 1
+  year_of_purchase: 1990
+  dates_active:
+  
+- original_name: utility_lights
+  description: CFL ceiling light  
+  type: light
+  subtype: ceiling downlight
+  instance: 1
+  main_room_light: true
+  room: utility
+  meters: [1]
+  nominal_consumption: {on_power: 11}
+  components:
+  - type: compact fluorescent lamp
+    manufacturer: Tesco
+    model: FLE 20TBXT3/827 10Y 295JA
+#
+#  Kitchen
+#
+- original_name: kitchen_lights
+  description: the new, efficient kitchen LED ceiling lights.  
+  type: light
+  subtype: ceiling downlight
+  instance: 2
+  main_room_light: true
+  room: kitchen
+  meters: [1]
+  nominal_consumption: {on_power: 15}
+  dates_active: {start:  '2013-01-01'} # guess
+  components:
+  - count: 3
+    manufacturer: Long Life Lamp Company
+    description: LED 5W GU10 120 degrees 4000K 240V 400lm
+    model: 27SMD
+    nominal_consumption: {on_power: 5}
+    type: LED lamp}
+
+- original_name: Steam_generator
+  description: Tefal Protect Turbo GV9150 Steam Generator, 150 g Turbo Steam
+  manufacturer: Tefal
+  model: GV9150
+  type: clothes iron
+  subtype: steam generator
+  room: kitchen
+  meters: [1] 
+  nominal_consumption: {on_power: 2200}
+  on_power_threshold: 
+  instance: 1
+  year_of_purchase: 
+  dates_active:
+
+- original_name: food_steamer
+  description: The Morphy Richards family-sized Intellisteam with its unique intelligent timer
+    ensures that all your steamed ingredients are perfectly cooked;
+    the intelligent steamer starts the steaming compartment containing ingredients with the longest cooking
+    time first, so the complete meal finishes cooking at the same time.
+  manufacturer: Morphy Richards
+  brand: intellisteam
+  model: 48781
+  type: food steamer
+  room: kitchen
+  meters: [1] 
+  nominal_consumption: {on_power: 2200}
+  on_power_threshold: 
+  instance: 1
+  year_of_purchase: 2010
+  dates_active: {start:  '2010-11-10'}
+ 
+- original_name: Kettle
+  description: stainless steel 2.5-3kw Hinged locking lid ; 360 degree base; One Cup Indicator
+  manufacturer: Philips
+  model: HD4671
+  type: kettle
+  room: kitchen
+  meters: [1] 
+  nominal_consumption: {on_power: 3000}
+  on_power_threshold: 3000
+  instance: 1
+  year_of_purchase: 
+  dates_active:
+  
+- original_name: Toaster
+  description: 4 slice toaster
+  manufacturer: Russell Hobbs
+  brand: Futura 4 slice
+  model: 18790
+  type: toaster
+  room: kitchen
+  meters: [1] 
+  nominal_consumption: 
+  on_power_threshold: 
+  instance: 1
+  year_of_purchase: 2015
+  dates_active:
+  
+- original_name: Coffee_maker
+  description: 1 cup
+  manufacturer: Krups
+  brand: Dolce Gusto Melody 1
+  model: KP2002
+  type: coffee maker
+  room: kitchen
+  meters: [1] 
+  nominal_consumption: {on_power: 1500}
+  on_power_threshold: 
+  instance: 1
+  year_of_purchase: 2008
+  dates_active: {start:  '2008-04-12'}
+  
+- original_name: Microwave
+  description: Power output 800 watts heating category E
+  manufacturer: Delonghi
+  model: AM820AGX
+  type: microwave
+  room: kitchen
+  meters: [1] 
+  nominal_consumption: 1250
+  on_power_threshold: 
+  instance: 1
+  year_of_purchase: 2009
+  dates_active: {start: '2009/09/09'}
+  
+- original_name: Oven
+  description: double oven with fan, on own 30 Amp feed
+  manufacturer: Neff
+  model: U1863 
+  type: electric oven
+  room: kitchen
+  meters: [1] 
+  nominal_consumption: 
+  on_power_threshold: 
+  instance: 1
+  year_of_purchase: 2004
+  dates_active: {start: '2004/08/21'}
+  
+- original_name: Fridge
+  description: A+ rated 146 kwh per year
+  manufacturer: AEG
+  brand: Santo
+  model: 72398KA
+  type: fridge
+  subtype: upright
+  room: kitchen
+  meters: [1] 
+  efficiency_rating:
+    rating: A+
+  nominal_consumption:
+    energy_per_year 146  
+  on_power_threshold: 
+  instance: 1
+  year_of_purchase: 
+  dates_active:
+
+- original_name: Dishwasher
+  description: 
+  manufacturer: Siemens
+  model: IQ500 
+  type: dish washer
+  room: kitchen
+  meters: [1] 
+  nominal_consumption: 2400
+  on_power_threshold: 
+  instance: 1
+  year_of_purchase: 2011
+  dates_active: {start:  '2011-01-14'}
+  
+- original_name: Waste_Disposal
+  description: The disposal has 1/2 horsepower and capacitor start. Stainless steel/cast-iron housing. 
+    Magnestart. Magnetic cover control. Anti-jam, automatic reversing on motor
+  manufacturer: Hobart
+  brand: Kitchen Aid Deluxe
+  type: waste disposal unit
+  room: kitchen
+  meters: [1] 
+  nominal_consumption: 2000
+  on_power_threshold: 
+  instance: 1
+  year_of_purchase: 
+  dates_active:
+
+  
+- original_name: Water_Softener
+  description: 
+  manufacturer: Monarch
+  brand: midimeter
+  model:  N89
+  type: water filter
+  room: kitchen
+  meters: [1] 
+  nominal_consumption: 
+  on_power_threshold: 
+  instance: 1
+  year_of_purchase: 
+  dates_active:
+
+- original_name: Cooker_Hood
+  description: Wall Chimney with 2 x 20w halogen lights, one motor with 4 speeds
+  manufacturer: Neff
+  model:  D8991
+  type: fan #need to add lights
+  room: kitchen
+  meters: [1] 
+  nominal_consumption: 145
+  on_power_threshold: 
+  instance: 1
+  year_of_purchase: 
+  dates_active:
+
+#
+# Family Room
+#
+- original_name: family_room_lights
+  description: the new, efficient LED ceiling lights.  
+  type: light
+  subtype: ceiling downlight
+  instance: 3
+  main_room_light: true
+  room: family room
+  meters: [1]
+  nominal_consumption: {on_power: 15}
+  components:
+  - count: 3
+    manufacturer: TLP
+    description: LED 5W SSC 3000K 240V
+    model: LDR504 W30E
+    nominal_consumption: {on_power: 5}
+    type: LED lamp
+  dates_active:
+  - {start:  '2013-01-01'} # guess
+ 
+- original_name: samsung_phone_charger
+  description: Micro USB charger UK plug output 5v 2A input 110-240V 0.35A 
+  manufacturer: Samsung
+  brand: Galaxy
+  model: ETA-U90UWE  
+  type: mobile phone charger
+  room: family room
+  meters: [1] 
+  nominal_consumption: {on_power: 80}
+  instance: 1
+  year_of_purchase: 2015
+  dates_active: 
+
+- original_name: family_tv 
+  description: space saving 19" LCD TV, HD Ready,
+    Digital freeview Tuner, integrated DVD player
+    Contrast - 500-1, Sound type - NICAM stereo sound
+    Inputs - 1xHDMI, 1xSCART, 1xComponent, 1xPC
+  manufacturer: Hitachi
+  brand: 
+  model: 19WDVBDVD 
+  type: television
+  instance: 1
+  components:
+    - screen:
+        diagonal_size: 19
+        display_format: 540p
+        type: flat screen
+        display_technology: LCD}
+    - integrated_av_sources: [digital TV tuner]
+  room: family room
+  meters: [1] 
+  nominal_consumption: 70
+  year_of_purchase: 
+  dates_active: 
+#
+# Hall
+#
+- original_name: media-server
+  description: headless, LAN connected, Intel i5 pc with lots of disk space 
+  type: server computer
+  room: hall
+  meters: [1]
+  nominal_consumption: {on_power: 300}
+
+- original_name: answer-phone
+  description: BT Verve 500 Digital Cordless Telephone Answering Machine
+  manufacturer: BT
+  brand: Verve
+  model: Verve 500
+  type: wireless phone charger #phone
+#  subtype: answer phone
+  room: hall
+  meters: [1] 
+  nominal_consumption: {on_power: 10}
+  instance: 1
+  year_of_purchase: 2010
+  dates_active: 
+
+- original_name: hall_light1
+  description: CFL ceiling light  
+  type: light
+  subtype: ceiling downlight
+  instance: 4
+  main_room_light: true
+  room: hall
+  meters: [1]
+  nominal_consumption: {on_power: 11}
+  components:
+  - type: compact fluorescent lamp
+ 
+- original_name: hall_light2
+  description: CFL ceiling light  
+  type: light
+  subtype: ceiling downlight
+  instance: 5
+  main_room_light: false
+  room: hall
+  meters: [1]
+  nominal_consumption: {on_power: 11}
+  components:
+  - type: compact fluorescent lamp
+ 
+- original_name: hall_light3
+  description: CFL ceiling light  
+  type: light
+  subtype: ceiling downlight
+  instance: 6
+  main_room_light: false
+  room: hall
+  meters: [1]
+  nominal_consumption: {on_power: 11}
+  components:
+  - type: compact fluorescent lamp
+
+- original_name: hoover_capture
+  description: cylinder vacuum, Features 2000 W motor power, Compact design for easy storage,
+     Washable HEPA filtration, Variable power control, Pet hair remover turbo brush,
+     P.CEE 1600-1800W, P.MAX 2000W
+  manufacturer: Hoover Ltd
+  brand: Capture
+  model:  TCP2011 001
+  type: vacuum cleaner
+  instance: 1
+  room: hall
+  meters: [1] 
+  nominal_consumption: {on_power: 1800}
+  on_power_threshold: 
+  year_of_purchase: 2014
+
+- original_name: dyson_animal
+  description: Bagless Technology Cyclonic Filter
+  manufacturer: Dyson Ltd
+  brand: Animal
+  model:  DC08
+  type: vacuum cleaner
+  instance: 2
+  room: hall
+  meters: [1] 
+  nominal_consumption: {on_power: 1200}
+  on_power_threshold: 
+  year_of_purchase: 2010
+
+#
+# Lounge
+#  
+- original_name: lounge_tv 
+  description: 
+  manufacturer: Panasonic
+  brand: Viera
+  model: TX-L55DT65B 
+  type: television
+  instance: 2
+  components:
+  - screen: {diagonal_size: 55, display_format: 1080p, type: flat screen, display_technology: LCD}
+  - integrated_av_sources: [digital TV tuner]
+  room: lounge
+  meters: [1] 
+  nominal_consumption: {on_power: 91}
+  efficiency_rating: {rating: A+, energy_per_year: 126} 
+  on_power_threshold: 
+  year_of_purchase: 2013
+  dates_active: {2013-10-18}
+  
+- original_name: home_cinema_blu_ray
+  description: Blu-ray Disc/DVD 5.1 Home Theatre System, DVD upscaling, 3D, iPlayer, YouTube
+  manufacturer: Sony
+  brand: Bravia
+  model:  BDV-E370
+  type: blu-ray player
+  room: lounge
+  meters: [1] 
+  nominal_consumption: {on_power: 850}
+  on_power_threshold: 
+  instance: 1
+  year_of_purchase: 2010
+  dates_active: {start:  2010-11-25}
+
+- original_name: lounge_light1
+  description: 3 bulb ceiling light  
+  type: light
+  subtype: ceiling downlight
+  instance: 7
+  count: 2
+  main_room_light: false
+  room: lounge
+  meters: [1]
+  nominal_consumption: {on_power: 180}
+  components:
+  - count: 3
+    type: incandescent lamp
+  - type: dimmer
+
+- original_name: lounge_light2
+  description: candle bulb wall lights  
+  type: light
+  subtype: wall
+  instance: 8
+  count: 4
+  main_room_light: false
+  room: lounge
+  meters: [1]
+  nominal_consumption: {on_power: 42}
+  components:
+  - {type: incandescent lamp, subtype: halogen}
+  
+- original_name: HiFi
+  description: Teac compact H500 separates, output 50 watts per channel into 8Ω (stereo),
+    Total harmonic distortion 0.03%, Input sensitivity 2.8mV (MM), 180mV (line),
+    Signal to noise ratio 67dB (MM), 95dB (line), Channel separation 65dB (line),
+    Speaker load impedance 4Ω to 16Ω, Dimensions 285 x 131 x 319mm, Weight 7kg
+  manufacturer: Teac
+  brand: Reference 500
+  type: audio system
+  room: lounge
+  meters: [1]
+#  components:
+#  - {type: CD player, model: PD-H500i, nominal_consumption: 40}
+#  - {type: audio amplifier, model: A-H500i, nominal_consumption: 500}
+#  - {type: radio, subtype: analogue, model: T-H500, nominal_consumption: 40}
+#  - {type: cassette deck, model: T-H500, nominal_consumption: 40}
+  year_of_purchase: 1990 #approx
+  dates_active: {start:  1990-02-01}
+  
+- original_name: record_deck
+  description: Sony PS-T1  Semi-Automatic Direct-Drive Turntable,
+    Platter 313mm aluminium alloy, speeds 33 and 45 rpm, Wow and flutter 0.04% wrms
+  manufacturer: Sony
+  model:  PS-T1
+  type: CD player #record deck
+  room: lounge
+  meters: [1] 
+  nominal_consumption: {on_power: 40}
+  on_power_threshold: 
+  instance: 1
+  year_of_purchase: 1980
+
+#
+# Dining room
+#
+- original_name: dining_light1
+  description: 3 bulb ceiling light  
+  type: light
+  subtype: ceiling downlight
+  instance: 9
+  count: 2
+  main_room_light: true
+  room: dining room
+  meters: [1]
+  nominal_consumption: {on_power: 100}
+  components:
+  - type: incandescent lamp
+
+- original_name: dining_light2
+  description: candle bulb wall lights  
+  type: light
+  subtype: wall
+  instance: 10
+  count: 2
+  main_room_light: false
+  room: dining room
+  meters: [1]
+  nominal_consumption: {on_power: 60}
+  components:
+  - {type: incandescent lamp, subtype: halogen}
+
+- original_name: dining_light3
+  description: candle bulb wall lights  
+  type: light
+  subtype: decorative
+  instance: 11
+  count: 2
+  main_room_light: false
+  room: dining room
+  meters: [1]
+  nominal_consumption: {on_power: 80}
+  components:
+  -  type: incandescent lamp
+ 
+- original_name: hostess_trolley
+  description: Philips HO100LB/BV
+  manufacturer: Philips
+  model:  HO100LB/BV
+  type: plate warmer
+  room: dining room
+  meters: [1] 
+  nominal_consumption: {on_power: 460}
+  on_power_threshold: 
+  year_of_purchase: 1983
+
+#
+# WC
+#  
+- original_name: wc_lights
+  description: CFL ceiling light  
+  type: light
+  subtype: ceiling downlight
+  instance: 12
+  main_room_light: true
+  room: utility
+  meters: [1]
+  nominal_consumption: {on_power: 11}
+  components:
+  -  type: compact fluorescent lamp
+#
+# Garage
+#
+- original_name: garage_door_opener
+  description: overhead garage door opener, motor + lamp 25w
+  manufacturer: Siep
+  model:  ST-77M
+  type: motor
+  room: garage
+  meters: [1] 
+  nominal_consumption: {on_power: 800} #guess
+  on_power_threshold: 
+  year_of_purchase: 1990
+#
+# greenhouse
+#
+- original_name: greenhouse_light
+  description: fluorescent lamp
+  type: light
+  subtype: ceiling downlight
+  instance: 13
+  main_room_light: true
+  room: greenhouse
+  meters: [1]
+  nominal_consumption: {on_power: 30}
+  components:
+  - {type: linear fluorescent lamp, manufacturer: Sylvania, on_power 30}
+
+- original_name: greenhouse_heater
+  description: electric thermostatically control 2 speed fan heater (1 or 2 KW)
+  type: electric space heater
+  control: thermostat
+  room: greenhouse
+  meters: [1] 
+  nominal_consumption: {on_power: 1000} #normally on the low setting
+#
+#shed
+#
+- original_name: shed_lights
+  description: independent fluorescent lamps
+  type: light
+  count: 2
+  subtype: ceiling downlight
+  instance: 14
+  main_room_light: true
+  room: shed
+  meters: [1]
+  nominal_consumption: {on_power: 96}
+  components:
+  -  {type: linear fluorescent lamp, manufacturer: Ring, on_power 36}
+#
+# Landing
+#
+- original_name: landing_light1
+  description: CFL ceiling light  
+  type: light
+  subtype: ceiling downlight
+  instance: 15
+  main_room_light: true
+  room: hall
+  meters: [1]
+  nominal_consumption: {on_power: 11}
+  components:
+  - type: compact fluorescent lamp
+
+- original_name: heating_pump
+  description: central heating circulating pump
+  manufacturer: Grundfos
+  brand: Selectric
+  model: UPS 15-50
+  type: water pump
+  room: landing
+  meters: [1] 
+  nominal_consumption: {on_power: 65} #could be 100,65 or 40 dependent on speed
+
+- original_name: heating_valve
+  description: central heating Motorised Mid-Position Valve
+  manufacturer: Honeywell
+  model: V4073A
+  type: CE appliance #motorised_valve
+  room: landing
+  meters: [1] 
+  nominal_consumption: {on_power: 6} 
+  
+#
+# rest of house
+#  
+- original_name: electronics
+  type: CE appliance
+  instance: 1
+  multiple: true
+  meters: [1]

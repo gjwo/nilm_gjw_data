@@ -1,0 +1,16 @@
+name: gjwdata
+long_name: gjw personal dataset
+creators:
+- Wood, Graham
+publication_date: 2015
+contact: gjwo
+description: Several weeks of power data for one.
+subject: Disaggregated power demand from domestic buildings.
+number_of_buildings: 1
+timezone: Europe/London
+geo_location:
+  locality: Hertfordshire   # village, town, city or state
+  country: GB   # standard two-letter country code defined by ISO 3166-1 alpha-2
+  latitude: 51.9000
+  longitude: 0.2000
+schema: https://github.com/nilmtk/nilm_metadata/tree/v0.2

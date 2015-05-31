@@ -1,0 +1,30 @@
+ED01013:
+  model: ED01013
+  manufacturer: Onzo Ltd
+  manufacturer_url: http://www.onzo.com/
+  description: Multifunction whole house meter and home display, 
+    #given the different sample rates and cumulative energy mixed, phase one treat the meter
+    #as having only 2 measurements power real fine and power reactive, comment out the rest
+  sample_period: 1 # the interval between samples. In seconds.
+  max_sample_period: 300 # Max allowable interval between samples. Seconds.
+  measurements:
+  #- physical_quantity: cumulative energy   #energy low res - cumulative energy use every 35 minutes approximately
+    #type: active   # active (real power), reactive or apparent?
+    #upper_limit: 10000000
+    #lower_limit: 0
+  #- physical_quantity: cumulative energy   #energy high res - cumulative energy use every 10 minutes approximately
+    #type: active   # active (real power), reactive or apparent?
+    #upper_limit: 10000000
+    #lower_limit: 0
+  #- physical_quantity: power   #power real standard - power granularity < 30 Seconds
+    #type: apparent   # active (real power), reactive or apparent?
+    #upper_limit: 10000
+    #lower_limit: 0
+  - physical_quantity: power   #power real fine - power granularity  1 Second (no data if no change)
+    type: apparent   # active (real power), reactive or apparent?
+    upper_limit: 10000
+    lower_limit: 0
+  - physical_quantity: power   #power reactive standard granularity  1 Second (no data if no change)
+    type: reactive   
+    upper_limit: 10000
+    lower_limit: -10000
