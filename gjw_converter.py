@@ -78,8 +78,8 @@ def convert_gjw(gjw_path, output_filename, format="HDF"):
     print( 'opening datastore', output_filename)
     store = get_datastore(output_filename, format, mode='w')
     # walk the directory tree from the dataset home directory
-    # process any .CSV files found
-    df = pd.DataFrame(columns=[TIMESTAMP_COLUMN_NAME,ACTIVE_COLUMN_NAME,REACTIVE_COLUMN_NAME])
+    #clear dataframe & add column headers
+     df = pd.DataFrame(columns=[TIMESTAMP_COLUMN_NAME,ACTIVE_COLUMN_NAME,REACTIVE_COLUMN_NAME])
     found = False
     for current_dir, dirs_in_current_dir, files in os.walk(gjw_path):
         if current_dir.find('.git')!=-1 or current_dir.find('.ipynb') != -1:
@@ -92,9 +92,8 @@ def convert_gjw(gjw_path, output_filename, format="HDF"):
             building_number = int(bld_nbr_re.search(building_name).group())
             meter_nbr = 1
             key = Key(building=building_number, meter=meter_nbr)
-        #clear dataframe df
-        #add column headers
-        for items in fnmatch.filter(files, "4*.csv"):
+       for items in fnmatch.filter(files, "4*.csv"):
+            # process any .CSV files found
             found = True
             ds = iso_date_re.search(items).group()
             print( 'found files for date:', ds)
@@ -105,10 +104,12 @@ def convert_gjw(gjw_path, output_filename, format="HDF"):
         if found:
             found = False
             df = _tidy_data(df)
-            csvout = join(current_dir,'meter'+str(meter_nbr)+'.data') # not called .csv to avoid clash
-            #print( csvout)
-            df.to_csv(csvout)
+            csvout_fn ='building'+str(building_nbr)+'_meter'+str(meter_nbr)+'.data'
+            csvout_ffn = join(current_dir,csvout_fn) # not called .csv to avoid clash
+            #print( csvout_ffn)
+            df.to_csv(csvout_ffn)
             store.put(str(key), df)
+            #clear dataframe & add column headers
             #df = pd.DataFrame(columns=[TIMESTAMP_COLUMN_NAME,ACTIVE_COLUMN_NAME,REACTIVE_COLUMN_NAME])
             break # only 1 folder with .csv files at present
     store.close()
@@ -135,3 +136,9 @@ def _tidy_data(df):
     df = df.astype(np.float32) #make everything floating point
     df = df.sort_index()
     return df
+    
+def main():
+    convert_gjw('c:/Users/GJWood/nilm_gjw_data', None)
+
+if __name__ == '__main__':
+    main()
