@@ -4,6 +4,7 @@ This repository is electricity monitoring data collected by me, and the necessar
 data into the Non Intrusive Load Monitor Tool Kit https://github.com/nilmtk/nilmtk/
 Further information about the metadata can be found here https://github.com/nilmtk/nilm_metadata and 
 the documentation can be found here https://github.com/nilmtk/nilmtk.github.io
+```
     directory and file structure
     nilm_gjw_data
         building<1>
@@ -23,3 +24,4 @@ the documentation can be found here https://github.com/nilmtk/nilmtk.github.io
         <other files such as>
         gjw_converter.py  <------------------ the converter code
         gjw_converter_test.ipnb <------------ runs of the convertr code in iPython Notebook
+```
