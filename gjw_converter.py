@@ -1,3 +1,4 @@
+from __future__ import print_function, division
 import pandas as pd
 import numpy as np
 from copy import deepcopy
@@ -74,14 +75,17 @@ def convert_gjw(gjw_path, output_filename, format="HDF"):
         output_filename =join(home_dir,'HDF5','nilm_gjw_data.hdf5')
     elec_path = join(gjw_path, 'building1','elec')
     # Open data store
-    print 'opening datastore', output_filename
+    print( 'opening datastore', output_filename)
     store = get_datastore(output_filename, format, mode='w')
     # walk the directory tree from the dataset home directory
     # process any .CSV files found
     df = pd.DataFrame(columns=[TIMESTAMP_COLUMN_NAME,ACTIVE_COLUMN_NAME,REACTIVE_COLUMN_NAME])
+    found = False
     for current_dir, dirs_in_current_dir, files in os.walk(gjw_path):
-        found = False
-        print 'checking', current_dir
+        if current_dir.find('.git')!=-1 or current_dir.find('.ipynb') != -1:
+            print( 'Skipping ', current_dir)
+            continue
+        print( 'checking', current_dir)
         m = bld_re.search(current_dir)
         if m:
             building_name = m.group()
@@ -93,7 +97,7 @@ def convert_gjw(gjw_path, output_filename, format="HDF"):
         for items in fnmatch.filter(files, "4*.csv"):
             found = True
             ds = iso_date_re.search(items).group()
-            print 'found files for date:', ds
+            print( 'found files for date:', ds)
             # found files to process
             df1,df2 = _read_filename_pair(current_dir,ds) # read the csv files into dataframes
             df3 = pd.merge(df1,df2,on=TIMESTAMP_COLUMN_NAME) #merge the two column types into 1 frame 
@@ -102,7 +106,7 @@ def convert_gjw(gjw_path, output_filename, format="HDF"):
             found = False
             df = _tidy_data(df)
             csvout = join(current_dir,'meter'+str(meter_nbr)+'.data') # not called .csv to avoid clash
-            print csvout
+            #print( csvout)
             df.to_csv(csvout)
             store.put(str(key), df)
             #df = pd.DataFrame(columns=[TIMESTAMP_COLUMN_NAME,ACTIVE_COLUMN_NAME,REACTIVE_COLUMN_NAME])
@@ -116,9 +120,8 @@ def _read_filename_pair(dir,ds):
     fn2 = filename_prefix_mapping['reactive']+ds+filename_suffix_mapping['reactive']+'.csv'
     ffn1 = join(dir,fn1)
     ffn2 = join(dir,fn2)
-    #print fn1 +' <-> '+ fn2
-    return pd.read_csv(ffn1,names=[TIMESTAMP_COLUMN_NAME,ACTIVE_COLUMN_NAME]),
-        pd.read_csv(ffn2,names=[TIMESTAMP_COLUMN_NAME,REACTIVE_COLUMN_NAME])
+    #print(fn1 +' <-> '+ fn2)
+    return pd.read_csv(ffn1,names=[TIMESTAMP_COLUMN_NAME,ACTIVE_COLUMN_NAME]),pd.read_csv(ffn2,names=[TIMESTAMP_COLUMN_NAME,REACTIVE_COLUMN_NAME])
 
 def _tidy_data(df):
     df.drop_duplicates(subset=["timestamp"], inplace=True) # remove duplicate rows with same timestamp
