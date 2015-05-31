@@ -23,5 +23,5 @@ the documentation can be found here https://github.com/nilmtk/nilmtk.github.io
             meter_devices.yaml
         <other files such as>
         gjw_converter.py  <------------------ the converter code
-        gjw_converter_test.ipnb <------------ runs of the convertr code in iPython Notebook
+        gjw_converter_test.ipnb <------------ runs of the converter code in iPython Notebook
 ```
