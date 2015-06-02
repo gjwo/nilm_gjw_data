@@ -79,7 +79,7 @@ def convert_gjw(gjw_path, output_filename, format="HDF"):
     store = get_datastore(output_filename, format, mode='w')
     # walk the directory tree from the dataset home directory
     #clear dataframe & add column headers
-     df = pd.DataFrame(columns=[TIMESTAMP_COLUMN_NAME,ACTIVE_COLUMN_NAME,REACTIVE_COLUMN_NAME])
+    df = pd.DataFrame(columns=[ACTIVE_COLUMN_NAME,REACTIVE_COLUMN_NAME])
     found = False
     for current_dir, dirs_in_current_dir, files in os.walk(gjw_path):
         if current_dir.find('.git')!=-1 or current_dir.find('.ipynb') != -1:
@@ -87,54 +87,71 @@ def convert_gjw(gjw_path, output_filename, format="HDF"):
             continue
         print( 'checking', current_dir)
         m = bld_re.search(current_dir)
-        if m:
+        if m: #The csv files may be further down the tree so this section may be repeated
             building_name = m.group()
-            building_number = int(bld_nbr_re.search(building_name).group())
+            building_nbr = int(bld_nbr_re.search(building_name).group())
             meter_nbr = 1
-            key = Key(building=building_number, meter=meter_nbr)
-       for items in fnmatch.filter(files, "4*.csv"):
+            key = Key(building=building_nbr, meter=meter_nbr)
+        for items in fnmatch.filter(files, "4*.csv"):
             # process any .CSV files found
             found = True
             ds = iso_date_re.search(items).group()
             print( 'found files for date:', ds)
             # found files to process
-            df1,df2 = _read_filename_pair(current_dir,ds) # read the csv files into dataframes
-            df3 = pd.merge(df1,df2,on=TIMESTAMP_COLUMN_NAME) #merge the two column types into 1 frame 
-            df = pd.concat([df,df3]) # concatenate the results into one long dataframe
+            df1 = _read_file_pair(current_dir,ds) # read two csv files into a dataframe    
+            # resample on single file only as there may be gaps between dumps            
+            df2 = df1.resample('S',fill_method='ffill') # make sure we have a reading for every second 
+            df = pd.concat([df,df2]) # concatenate the results into one long dataframe
         if found:
             found = False
-            df = _tidy_data(df)
-            csvout_fn ='building'+str(building_nbr)+'_meter'+str(meter_nbr)+'.data'
-            csvout_ffn = join(current_dir,csvout_fn) # not called .csv to avoid clash
-            #print( csvout_ffn)
-            df.to_csv(csvout_ffn)
+            df = _prepare_data_for_toolkit(df)
+            #debug - produces a very large file
+            #csvout_fn ='building'+str(building_nbr)+'_meter'+str(meter_nbr)+'.data'
+            #csvout_ffn = join(current_dir,csvout_fn) # not called .csv to avoid clash
+            #df.to_csv(csvout_ffn)
+            #print("csv data written to: ", csvout_ffn)
             store.put(str(key), df)
             #clear dataframe & add column headers
-            #df = pd.DataFrame(columns=[TIMESTAMP_COLUMN_NAME,ACTIVE_COLUMN_NAME,REACTIVE_COLUMN_NAME])
+            #df = pd.DataFrame(columns=[ACTIVE_COLUMN_NAME,REACTIVE_COLUMN_NAME])
             break # only 1 folder with .csv files at present
     store.close()
     convert_yaml_to_hdf5(join(gjw_path, 'metadata'),output_filename)
     print("Done converting gjw to HDF5!")
 
-def _read_filename_pair(dir,ds):
+def _read_file_pair(dir,ds):
+    """"
+    parameters 
+        dir - the directory path where the files may be found
+        ds  - the date string which identifies the pair of files
+    The filenames are constructed using the appropriate prefixes and suffixes
+    The data is then read, merged, de-duplicated, converted to the correct time zone
+    and converted to a time series
+    """
     fn1 = filename_prefix_mapping['active']+ds+filename_suffix_mapping['active']+'.csv'
     fn2 = filename_prefix_mapping['reactive']+ds+filename_suffix_mapping['reactive']+'.csv'
     ffn1 = join(dir,fn1)
     ffn2 = join(dir,fn2)
     #print(fn1 +' <-> '+ fn2)
-    return pd.read_csv(ffn1,names=[TIMESTAMP_COLUMN_NAME,ACTIVE_COLUMN_NAME]),pd.read_csv(ffn2,names=[TIMESTAMP_COLUMN_NAME,REACTIVE_COLUMN_NAME])
-
-def _tidy_data(df):
+    df1 = pd.read_csv(ffn1,names=[TIMESTAMP_COLUMN_NAME,ACTIVE_COLUMN_NAME])
+    df2 = pd.read_csv(ffn2,names=[TIMESTAMP_COLUMN_NAME,REACTIVE_COLUMN_NAME])
+    df3 = pd.merge(df1,df2,on=TIMESTAMP_COLUMN_NAME) #merge the two column types into 1 frame
+    df3.drop_duplicates(subset=["timestamp"], inplace=True) # remove duplicate rows with same timestamp
+    df3.index = pd.to_datetime(df3.timestamp.values, unit='s', utc=True) # convert the index to time based
+    df3 = df3.tz_convert(TIMEZONE) #deal with summertime etc. for London timezone
+    df3 = df3.drop(TIMESTAMP_COLUMN_NAME, 1) # remove the now redundant timestamp column
+    return df3
+    
+def _prepare_data_for_toolkit(df):
+    #remove any duplicate timestamps between files
+    df["timestamp"] = df.index # add the index back in as a column 
     df.drop_duplicates(subset=["timestamp"], inplace=True) # remove duplicate rows with same timestamp
-    df.index = pd.to_datetime(df.timestamp.values, unit='s', utc=True) # convert the index to time based
-    df = df.tz_convert(TIMEZONE) #deal with summertime etc. for London timezone
-    df = df.drop(TIMESTAMP_COLUMN_NAME, 1) # remove the now redundant timestamp column
-    df.rename(columns=lambda x: column_mapping[x], inplace=True) #replace column lables with [P,T] pair
-    df.columns.set_names(LEVEL_NAMES, inplace=True) # rename the columns with 2 levels of name
+    df = df.drop("timestamp",1) # remove the timestamp column  
+    df.rename(columns=lambda x: column_mapping[x], inplace=True) # Renaming from gjw header to nilmtk controlled vocabulary
+    df.columns.set_names(LEVEL_NAMES, inplace=True) # Needed for column levelling (all converter need this line)
     df = df.convert_objects(convert_numeric=True) # make sure everything is numeric
     df = df.dropna() # drop rows with empty cells
-    df = df.astype(np.float32) #make everything floating point
-    df = df.sort_index()
+    df = df.astype(np.float32) # Change float 64 (default) to float 32 
+    df = df.sort_index() # Ensure that time series index is sorted
     return df
     
 def main():

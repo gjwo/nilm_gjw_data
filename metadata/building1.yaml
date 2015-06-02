@@ -2,7 +2,6 @@ instance: 1   # this is the only building in the dataset
 original_name: house_1   # Only 1 house
 energy_improvements: [loft insulation, solid wall insulation, double glazing]
 heating: [natural gas]
-instance: 1
 n_occupants: 3
 ownership: bought
 building_type: detached
@@ -315,6 +314,7 @@ appliances:
   manufacturer: Neff
   model:  D8991
   type: fan #need to add lights
+  subtype: extractor
   room: kitchen
   meters: [1] 
   nominal_consumption: 145
@@ -386,6 +386,7 @@ appliances:
 - original_name: media-server
   description: headless, LAN connected, Intel i5 pc with lots of disk space 
   type: server computer
+  instance: 1
   room: hall
   meters: [1]
   nominal_consumption: {on_power: 300}
@@ -396,6 +397,7 @@ appliances:
   brand: Verve
   model: Verve 500
   type: wireless phone charger #phone
+  instance: 1
 #  subtype: answer phone
   room: hall
   meters: [1] 
@@ -539,13 +541,14 @@ appliances:
   manufacturer: Teac
   brand: Reference 500
   type: audio system
+  instance: 1
   room: lounge
   meters: [1]
-#  components:
-#  - {type: CD player, model: PD-H500i, nominal_consumption: 40}
-#  - {type: audio amplifier, model: A-H500i, nominal_consumption: 500}
-#  - {type: radio, subtype: analogue, model: T-H500, nominal_consumption: 40}
-#  - {type: cassette deck, model: T-H500, nominal_consumption: 40}
+  components:
+  - {type: CD player, model: PD-H500i, nominal_consumption: 40}
+  - {type: audio amplifier, model: A-H500i, nominal_consumption: 500}
+  - {type: radio, subtype: analogue, model: T-H500, nominal_consumption: 40}
+  - {type: cassette deck, model: T-H500, nominal_consumption: 40}
   year_of_purchase: 1990 #approx
   dates_active: {start:  1990-02-01}
   
@@ -609,6 +612,7 @@ appliances:
   manufacturer: Philips
   model:  HO100LB/BV
   type: plate warmer
+  instance: 1
   room: dining room
   meters: [1] 
   nominal_consumption: {on_power: 460}
@@ -637,6 +641,7 @@ appliances:
   manufacturer: Siep
   model:  ST-77M
   type: motor
+  instance: 1
   room: garage
   meters: [1] 
   nominal_consumption: {on_power: 800} #guess
@@ -660,6 +665,7 @@ appliances:
 - original_name: greenhouse_heater
   description: electric thermostatically control 2 speed fan heater (1 or 2 KW)
   type: electric space heater
+  instance: 1
   control: thermostat
   room: greenhouse
   meters: [1] 
@@ -700,6 +706,7 @@ appliances:
   brand: Selectric
   model: UPS 15-50
   type: water pump
+  instance: 1
   room: landing
   meters: [1] 
   nominal_consumption: {on_power: 65} #could be 100,65 or 40 dependent on speed
@@ -709,6 +716,7 @@ appliances:
   manufacturer: Honeywell
   model: V4073A
   type: CE appliance #motorised_valve
+  instance: 1
   room: landing
   meters: [1] 
   nominal_consumption: {on_power: 6} 
@@ -718,6 +726,6 @@ appliances:
 #  
 - original_name: electronics
   type: CE appliance
-  instance: 1
+  instance: 2
   multiple: true
   meters: [1]
