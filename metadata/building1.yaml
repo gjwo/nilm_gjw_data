@@ -8,7 +8,7 @@ building_type: detached
 construction_year: 1970
 description: 'Family home'
 description_of_occupants: 2 adults and 1 teenager.
-timeframe: {start: '2013-09-26T16:51:45+00:00', end: '2013-12-03T23:56:12+00:00'}
+timeframe: {start: '2013-11-12 09:28:27+00:00', end: '2015-05-27 14:41:08+01:00'}
 
 rooms:
 - {floor: 0, name: lounge}
