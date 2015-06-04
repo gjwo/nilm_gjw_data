@@ -16,23 +16,48 @@ from nilmtk.utils import get_module_directory, check_directory_exists
 from nilm_metadata import convert_yaml_to_hdf5, save_yaml_to_datastore
 
 column_mapping = {
+    'frequency': ('frequency', ""),
+    'voltage': ('voltage', ""),
+    'W': ('power', 'active'),
     'active': ('power', 'active'),
-    'reactive': ('power', 'reactive')
+    'energy': ('energy', 'apparent'),
+    'A': ('current', ''),
+    'reactive_power': ('power', 'reactive'),
+    'apparent_power': ('power', 'apparent'),
+    'power_factor': ('pf', ''),
+    'PF': ('pf', ''),
+    'phase_angle': ('phi', ''),
+    'VA': ('power', 'apparent'),
+    'VAR': ('power', 'reactive'),
+    'reactive': ('power', 'reactive'),
+    'VLN': ('voltage', ""),
+    'V': ('voltage', ""),
+    'f': ('frequency', "")
     
 }
 # data for file name manipulation
+TYPE_A = "active"
+TYPE_R = "reactive"
+
 filename_prefix_mapping = {
-    'active' : ('4-POWER_REAL_FINE '),
-    'reactive' : ('5-POWER_REACTIVE_STANDARD ')
+    TYPE_A : ('4-POWER_REAL_FINE '),
+    TYPE_R : ('5-POWER_REACTIVE_STANDARD ')
 }
 filename_suffix_mapping = {
-    'active' : (' Dump'),
-    'reactive' : (' Dump')
+    TYPE_A : (' Dump'),
+    TYPE_R : (' Dump')
 }
+
 # DataFrame column names
 TIMESTAMP_COLUMN_NAME = "timestamp"
 ACTIVE_COLUMN_NAME = "active"
 REACTIVE_COLUMN_NAME = "reactive"
+
+type_column_mapping = {
+    TYPE_A : (ACTIVE_COLUMN_NAME),
+    TYPE_R : (REACTIVE_COLUMN_NAME) 
+}
+
 
 TIMEZONE = "Europe/London" # local time zone
 home_dir='/Users/GJWood/nilm_gjw_data' # path to input data
@@ -83,7 +108,7 @@ def convert_gjw(gjw_path, output_filename, format="HDF"):
     found = False
     for current_dir, dirs_in_current_dir, files in os.walk(gjw_path):
         if current_dir.find('.git')!=-1 or current_dir.find('.ipynb') != -1:
-            print( 'Skipping ', current_dir)
+            #print( 'Skipping ', current_dir)
             continue
         print( 'checking', current_dir)
         m = bld_re.search(current_dir)
@@ -96,20 +121,14 @@ def convert_gjw(gjw_path, output_filename, format="HDF"):
             # process any .CSV files found
             found = True
             ds = iso_date_re.search(items).group()
-            print( 'found files for date:', ds)
+            print( 'found files for date:', ds,end=" ")
             # found files to process
             df1 = _read_file_pair(current_dir,ds) # read two csv files into a dataframe    
-            # resample on single file only as there may be gaps between dumps            
-            df2 = df1.resample('S',fill_method='ffill') # make sure we have a reading for every second 
-            df = pd.concat([df,df2]) # concatenate the results into one long dataframe
+            df = pd.concat([df,df1]) # concatenate the results into one long dataframe
         if found:
             found = False
             df = _prepare_data_for_toolkit(df)
-            #debug - produces a very large file
-            #csvout_fn ='building'+str(building_nbr)+'_meter'+str(meter_nbr)+'.data'
-            #csvout_ffn = join(current_dir,csvout_fn) # not called .csv to avoid clash
-            #df.to_csv(csvout_ffn)
-            #print("csv data written to: ", csvout_ffn)
+            _summarise_dataframe(df,'Prepared for tool kit')
             store.put(str(key), df)
             #clear dataframe & add column headers
             #df = pd.DataFrame(columns=[ACTIVE_COLUMN_NAME,REACTIVE_COLUMN_NAME])
@@ -118,34 +137,52 @@ def convert_gjw(gjw_path, output_filename, format="HDF"):
     convert_yaml_to_hdf5(join(gjw_path, 'metadata'),output_filename)
     print("Done converting gjw to HDF5!")
 
+def _read_and_standardise_file(dir,ds,type):   
+    """
+    parameters 
+        dir  - the directory path where the files may be found
+        ds   - the date string which identifies the pair of files
+        type - the type of data to be read
+    The filename is constructed using the appropriate prefixes and suffixes
+    The data is then read, merged, de-duplicated, converted to the correct time zone
+    and converted to a time series and resampled per second
+    """
+    fn = filename_prefix_mapping[type]+ds+filename_suffix_mapping[type]+'.csv'
+    ffn = join(dir,fn)
+    df = pd.read_csv(ffn,names=[TIMESTAMP_COLUMN_NAME,type_column_mapping[type]])
+    df.drop_duplicates(subset=[TIMESTAMP_COLUMN_NAME], inplace=True) # remove duplicate rows with same timestamp
+    df.index = pd.to_datetime(df.timestamp.values, unit='s', utc=True) # convert the index to time based
+    df = df.tz_convert(TIMEZONE) #deal with summertime etc. for London timezone
+    # re-sample on single file only as there may be gaps between dumps            
+    df = df.resample('S',fill_method='ffill') # make sure we have a reading for every second
+    # resample seems to remove the timestamp column so put it back
+    df[TIMESTAMP_COLUMN_NAME] = df.index
+    df.drop_duplicates(subset=TIMESTAMP_COLUMN_NAME, inplace=True)
+    return df
+
 def _read_file_pair(dir,ds):
     """"
     parameters 
         dir - the directory path where the files may be found
         ds  - the date string which identifies the pair of files
-    The filenames are constructed using the appropriate prefixes and suffixes
-    The data is then read, merged, de-duplicated, converted to the correct time zone
-    and converted to a time series
+    The files are processed individually then the columns merged on matching timestamps   
     """
-    fn1 = filename_prefix_mapping['active']+ds+filename_suffix_mapping['active']+'.csv'
-    fn2 = filename_prefix_mapping['reactive']+ds+filename_suffix_mapping['reactive']+'.csv'
-    ffn1 = join(dir,fn1)
-    ffn2 = join(dir,fn2)
-    #print(fn1 +' <-> '+ fn2)
-    df1 = pd.read_csv(ffn1,names=[TIMESTAMP_COLUMN_NAME,ACTIVE_COLUMN_NAME])
-    df2 = pd.read_csv(ffn2,names=[TIMESTAMP_COLUMN_NAME,REACTIVE_COLUMN_NAME])
-    df3 = pd.merge(df1,df2,on=TIMESTAMP_COLUMN_NAME) #merge the two column types into 1 frame
-    df3.drop_duplicates(subset=["timestamp"], inplace=True) # remove duplicate rows with same timestamp
-    df3.index = pd.to_datetime(df3.timestamp.values, unit='s', utc=True) # convert the index to time based
-    df3 = df3.tz_convert(TIMEZONE) #deal with summertime etc. for London timezone
-    df3 = df3.drop(TIMESTAMP_COLUMN_NAME, 1) # remove the now redundant timestamp column
+    df1 = _read_and_standardise_file(dir,ds,TYPE_A)
+    #_summarise_dataframe(df1,'read file: '+TYPE_A)
+    df2 = _read_and_standardise_file(dir,ds,TYPE_R)
+    #_summarise_dataframe(df2,'read file: '+TYPE_R)  
+    df3 = pd.merge(df1,df2,on=TIMESTAMP_COLUMN_NAME, how='outer') #merge the two column types into 1 frame
+    df3.fillna(value=0, inplace=True) # may need to enter initial entries to reactive sequence
+    #_summarise_dataframe(df3,'return from merge and fillna)
+    print(df3[TIMESTAMP_COLUMN_NAME].head(1).format(),"to",df3[TIMESTAMP_COLUMN_NAME].tail(1).format()) #print first and last entries
     return df3
-    
+
 def _prepare_data_for_toolkit(df):
     #remove any duplicate timestamps between files
-    df["timestamp"] = df.index # add the index back in as a column 
     df.drop_duplicates(subset=["timestamp"], inplace=True) # remove duplicate rows with same timestamp
-    df = df.drop("timestamp",1) # remove the timestamp column  
+    df.index = pd.to_datetime(df.timestamp.values, unit='s', utc=True) # convert the index to time based
+    df = df.tz_convert(TIMEZONE) #deal with summertime etc. for London timezone
+    df = df.drop(TIMESTAMP_COLUMN_NAME,1) # remove the timestamp column  
     df.rename(columns=lambda x: column_mapping[x], inplace=True) # Renaming from gjw header to nilmtk controlled vocabulary
     df.columns.set_names(LEVEL_NAMES, inplace=True) # Needed for column levelling (all converter need this line)
     df = df.convert_objects(convert_numeric=True) # make sure everything is numeric
@@ -153,6 +190,11 @@ def _prepare_data_for_toolkit(df):
     df = df.astype(np.float32) # Change float 64 (default) to float 32 
     df = df.sort_index() # Ensure that time series index is sorted
     return df
+
+def _summarise_dataframe(df,loc):
+    print(df.head(4))
+    print("...", len(df.index),"rows at", loc)
+    print (df.tail(4))
     
 def main():
     convert_gjw('c:/Users/GJWood/nilm_gjw_data', None)
