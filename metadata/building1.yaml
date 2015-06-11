@@ -11,31 +11,33 @@ description_of_occupants: 2 adults and 1 teenager.
 timeframe: {start: '2013-11-12 09:28:27+00:00', end: '2015-05-27 14:41:08+01:00'}
 
 rooms:
-- {floor: 0, name: lounge}
-- {floor: 0, name: hall}
-- {floor: 0, name: kitchen}
-- {floor: 0, name: utility}
-- {floor: 0, name: dining room}
-- {floor: 0, name: family room}
-- {floor: 0, name: wc}
-- {floor: 0, name: garage}
-- {floor: 0, name: shed}
-- {floor: 0, name: greenhouse}
+- {floor: 0, instance: 1, name: lounge}
+- {floor: 0, instance: 1, name: hall}
+- {floor: 0, instance: 1, name: kitchen}
+- {floor: 0, instance: 1, name: utility}
+- {floor: 0, instance: 1, name: dining room}
+- {floor: 0, instance: 1, name: family room}
+- {floor: 0, instance: 1, name: wc}
+- {floor: 0, instance: 1, name: garage}
+- {floor: 0, instance: 1, name: shed}
+- {floor: 0, instance: 1, name: greenhouse}
 - {floor: 1, instance: 1, name: bedroom, description: master bedroom}
 - {floor: 1, instance: 2, name: bedroom, description: guest bedroom}
 - {floor: 1, instance: 3, name: bedroom, description: teenagers bedroom}
 - {floor: 1, instance: 4, name: bedroom, description: spare bedroom}
-- {floor: 1, name: study}
+- {floor: 1, instance: 1, name: study}
 - {floor: 1, instance: 1, name: bathroom, description: ensuite}
 - {floor: 1, instance: 2, name: bathroom, description: family bathroom }
-- {floor: 1, name: landing}
+- {floor: 1, instance: 1, name: landing}
 
 elec_meters:
   1:
     site_meter: true
+    name: house_total
+    room: utility
     submeter_of: 0
     device_model: ED01013  # keys into meter_devices dictionary
-    data_location: house_1/channel_1.dat
+    data_location: /building1/elec/meter1
 
 appliances:
 #
