@@ -722,7 +722,392 @@ appliances:
   room: landing
   meters: [1] 
   nominal_consumption: {on_power: 6} 
+
+#
+# Master Bedroom
+#
+- original_name: bedroom lights
+  description: Mostly used on a dimmer
+  main_room_light: true
+  room: bedroom,1
+  meters: [1]
+  nominal_consumption: {on_power: 180}
+  subtype: ceiling downlight
+  type: light
+  instance: 16
+  components:
+  - count: 3
+    model: G9
+    nominal_consumption: {on_power: 40}
+    type: halogen lamp
+  - {type: dimmer, subtype: TRIAC}
+  - count: 1
+    model: globe
+    nominal_consumption: {on_power: 60}
+    type: incandescent lamp
+
+- original_name: DAB_radio_alarm
+  description: this DAB radio has an additonal speaker, weekday time on 7:00am for 1 hour, separate
+    power supply at 200ma, giving 9V dc at 1.5A
+  manufacturer: Pure
+  model: Sonus-1XT   
+  instance: 1
+  meters: [1]
+  room: bedroom,1
+  type: radio
+  subtype: DAB
+  nominal_consumption: {on_power: 46} 
+  year_of_purchase: 2012
+
+- original_name: phone_remote_1
+  description: BT Verve 500 Digital Cordless Telephone 30ma gives 7.5V dc at 300ma
+  manufacturer: BT
+  brand: Verve
+  model: Verve 500
+  type: wireless phone charger #phone
+  instance: 2
+  room: bedroom,1
+  meters: [1] 
+  nominal_consumption: {on_power: 7}
+  year_of_purchase: 2010
+  dates_active: 
+
+- original_name: electric_blanket
+  description: Dual control, with heat setting and timers
+  manufacturer: Slumberland
+  brand: Slumberland
+  model: king size mattress topper 8811
+  type: electric blanket
+  control: timer
+  instance: 2
+  room: bedroom,1
+  meters: [1] 
+  nominal_consumption: {on_power: 96}
+  instance: 1
+  year_of_purchase: 2010
+  components:
+  - count: 2
+    nominal_consumption: {on_power: 48}
+    type: electric heating element
+  dates_active: 
+
+- original_name: bedroom_tv 
+  description: space saving 19" LCD TV, HD Ready,
+    Digital freeview Tuner, integrated DVD player
+    Contrast - 500-1, Sound type - NICAM stereo sound
+    Inputs - 1xHDMI, 1xSCART, 1xComponent, 1xPC
+  manufacturer: Hitachi
+  brand: 
+  model: L19DP03U 
+  type: television
+  instance: 3
+  components:
+    - screen:
+        diagonal_size: 19
+        display_format: 540p
+        type: flat screen
+        display_technology: LCD}
+    - integrated_av_sources: [digital TV tuner]
+  room: family room
+  meters: [1] 
+  nominal_consumption: 70
+  year_of_purchase: 
+  dates_active: 
+#
+# ensuite bathroom
+#
+- original_name: ensuite_heating
+  description: underfloor heating with 7 day timer, heat setting and theromostat
+  manufacturer: unknown
+  brand: unknown
+  model: unknown
+  type: electric space heater
+  control: timer, thermostat
+  instance: 2
+  room: bathroom,1
+  meters: [1] 
+  nominal_consumption: {on_power: 789}
+  year_of_purchase: 1997
+  dates_active: 
+
+- original_name: ensuite_light1
+  description: CFL ceiling light  
+  type: light
+  subtype: ceiling downlight
+  instance: 17
+  main_room_light: true
+  room: hall
+  meters: [1]
+  nominal_consumption: {on_power: 11}
+  components:
+  - type: compact fluorescent lamp
+
+- original_name: ensuite_vanity_lights
+  description: vanity unit lights 
+  type: light
+  subtype: wall
+  instance: 18
+  main_room_light: true
+  room: bathroom,1
+  meters: [1]
+  nominal_consumption: {on_power: 120}
+  components:
+  - count: 3
+    type: incandescent
+    subtype: halogen
+    nominal_consumption: {on_power: 40}
+
+#
+# family bathroom
+#
+- original_name: family_bathroom_heating
+  description: underfloor heating with 7 day timer, heat setting and theromostat
+  manufacturer: unknown
+  brand: unknown
+  model: unknown
+  type: electric space heater
+  control: timer, thermostat
+  instance: 3
+  room: bathroom,1
+  meters: [1] 
+  nominal_consumption: {on_power: 789}
+  year_of_purchase: 1997
+  dates_active: 
+
+
+- original_name: ensuite_light1
+  description: CFL ceiling light  
+  type: light
+  subtype: ceiling downlight
+  instance: 19
+  main_room_light: false
+  room: hall
+  meters: [1]
+  nominal_consumption: {on_power: 11}
+  components:
+  - type: compact fluorescent lamp
+
+- original_name: bathroom_vanity_light
+  description: vanity unit lights 
+  type: light
+  subtype: wall
+  instance: 20
+  main_room_light: true
+  room: bathroom,1
+  meters: [1]
+  nominal_consumption: {on_power: 120}
+  components:
+  - count: 3
+    type: incandescent
+    subtype: halogen
+    nominal_consumption: {on_power: 40}
+#
+# Guest room
+#  
+- original_name: guest_light1
+  description: CFL ceiling light  
+  type: light
+  subtype: ceiling downlight
+  instance: 21
+  main_room_light: true
+  room: bedroom,2
+  meters: [1]
+  nominal_consumption: {on_power: 11}
+  components:
+  - type: compact fluorescent lamp
+
+#
+# Study
+#
   
+- original_name: study_light1
+  description: CFL ceiling light  
+  type: light
+  subtype: ceiling downlight
+  instance: 22
+  main_room_light: true
+  room: study
+  meters: [1]
+  nominal_consumption: {on_power: 14}
+  components:
+  - type: compact fluorescent lamp
+
+- original_name: DAB_radio
+  description: not used much power supply at 600ma, giving 12V dc at 1.5A
+  manufacturer: Roberts
+  model: Stream-83i   
+  instance: 2
+  meters: [1]
+  room: study
+  type: radio
+  subtype: DAB
+  nominal_consumption: {on_power: 100} 
+  year_of_purchase: 2012
+
+- original_name: office_PC
+  description: LAN connected, Intel i5 pc with SSD
+  type: computer
+  manufacturer: Dell
+  model: studio-XPS
+  instance: 1
+  room: study
+  meters: [1]
+  nominal_consumption: {on_power: 129}
+  year_of_purchase: 2000
+
+- original_name: lcd_office1
+  type: computer monitor
+  description: supplied with original Dell PC, used as secondary monitor
+  manufacturer: Dell
+  model: FP1800
+  instance: 2
+  meters: [1]
+  room: study
+  components:
+  - {diagonal_size: 18, display_technology: LCD, manufacturer: Dell, type: flat screen}
+  nominal_consumption: {on_power: 80}
+  year_of_purchase: 2003
+
+- original_name: lcd_office2
+  description: upgrade to original monitor, now primary monitor
+  type: computer monitor
+  manufacturer: Dell
+  model: U1224
+  instance: 1
+  meters: [1]
+  room: study
+  components:
+  - {diagonal_size: 24, display_technology: LCD, manufacturer: Dell, type: flat screen}
+  nominal_consumption: {on_power: 64}
+  year_of_purchase: 2010
+
+- original_name: lcd_office3
+  description: Originally Matthews primary monitor to 2015-06-10
+  type: computer monitor
+  manufacturer: Acer
+  model: S240HL
+  instance: 3
+  meters: [1]
+  room: study
+  components:
+  - {diagonal_size: 24, display_technology: LCD, manufacturer: Dell, type: flat screen}
+  nominal_consumption: {on_power: 50}
+  year_of_purchase: 2010
+
+- original_name: study_printer
+  description: Lan connected multifunction device including scanner 
+  manufacturer: Canon
+  model: MP600R
+  instance: 1
+  meters: [1]
+  room: study
+  type: multi-function device
+  subtype: inkjet
+  year_of_purchase: 2012
+
+- original_name: office_phone
+  description: BT Paragon
+  manufacturer: BT
+  brand: Paragon
+  model: 510
+  type: wireless phone charger #phone
+  instance: 3
+  room: study
+  meters: [1] 
+  nominal_consumption: {on_power: 10}
+  year_of_purchase: 2010
+  
+#
+# Teenagers bedroom
+#
+
+- original_name: teenage_light1
+  description: CFL ceiling light  
+  type: light
+  subtype: ceiling downlight
+  instance: 23
+  main_room_light: true
+  room: bedroom,3
+  meters: [1]
+  nominal_consumption: {on_power: 11}
+  components:
+  - type: compact fluorescent lamp
+
+- original_name: old_gaming_PC
+  description: LAN connected, Intel i5 pc with SSD
+  type: computer
+  instance: 2
+  room: bedroom,3
+  meters: [1]
+  nominal_consumption: {on_power: 300}
+
+- original_name: msi_gaming_PC
+  description: LAN connected, Intel i5 pc with SSD
+  type: computer
+  instance: 3
+  room: bedroom,3
+  meters: [1]
+  nominal_consumption: {on_power: 300}
+  year_of_purchase: 2015
+  dates_active:
+  - {start: '2015-06-10T12:00:00+01:00'}
+  
+- original_name: lcd_teenage1
+  description: primary monitor from 2015-06-10
+  type: computer monitor
+  manufacturer: LG
+  model: 29UB55
+  instance: 4
+  meters: [1]
+  room: bedroom,3
+  components:
+  - {diagonal_size: 29, display_technology: LCD, manufacturer: LG, type: flat screen}
+  nominal_consumption: {on_power: 34}
+  year_of_purchase: 2010
+  efficiency_rating:
+    rating: B
+  nominal_consumption:
+    energy_per_year: 50  
+
+- original_name: bedroom3_tv2 
+  description: 
+  manufacturer: LG
+  brand: 
+  model: m2432 
+  type: television
+  instance: 4
+  components:
+    - screen:
+        diagonal_size: 24
+        display_format: 1080p
+        type: flat screen
+        display_technology: LCD}
+    - integrated_av_sources: [digital TV tuner]
+  room: bedroom,3
+  meters: [1] 
+  nominal_consumption: 25
+  efficiency_rating:
+    rating: A
+  year_of_purchase: 2013
+  dates_active: 
+
+#
+# Spare room
+#
+
+- original_name: spare_light1
+  description: CFL ceiling light  
+  type: light
+  subtype: ceiling downlight
+  instance: 24
+  main_room_light: true
+  room: bedroom,4
+  meters: [1]
+  nominal_consumption: {on_power: 11}
+  components:
+  - type: compact fluorescent lamp
+
+ 
 #
 # rest of house
 #  
