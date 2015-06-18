@@ -25,3 +25,4 @@ the documentation can be found here https://github.com/nilmtk/nilmtk.github.io
         gjw_converter.py  <------------------ the converter code
         gjw_converter_test.ipnb <------------ runs of the converter code in iPython Notebook
 ```
+[![Code Health](https://landscape.io/github/gjwo/nilm_gjw_data/master/landscape.svg?style=flat)](https://landscape.io/github/gjwo/nilm_gjw_data/master)
