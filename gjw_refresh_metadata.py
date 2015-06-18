@@ -5,8 +5,8 @@ from nilmtk.utils import check_directory_exists
 from nilm_metadata import convert_yaml_to_hdf5
 
 home_dir='/Users/GJWood/nilm_gjw_data' # path to input data
-
-def refresh_gjw_metadata(gjw_path, output_filename, format="HDF"):
+# was def refresh_gjw_metadata(gjw_path, output_filename, format="HDF"):
+def refresh_gjw_metadata(gjw_path, output_filename):
     """
     Parameters
     ----------
