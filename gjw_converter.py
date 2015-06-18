@@ -2,14 +2,14 @@ from __future__ import print_function, division
 import pandas as pd
 import numpy as np
 import os
-from os.path import join, isfile
+from os.path import join
 import fnmatch
 import re
 from nilmtk.utils import get_datastore
 from nilmtk.datastore import Key
 from nilmtk.measurement import LEVEL_NAMES
 from nilmtk.utils import check_directory_exists
-from nilm_metadata import convert_yaml_to_hdf5, save_yaml_to_datastore
+from nilm_metadata import convert_yaml_to_hdf5
 
 column_mapping = {
     'frequency': ('frequency', ""),
@@ -63,7 +63,7 @@ bld_re = re.compile('building\d+') #used to pull building name from directory pa
 bld_nbr_re = re.compile ('\d+') # used to pull the building number from the name
 iso_date_re = re.compile ('\d{4}-\d{2}-\d{2}') # used to pull the date from the file name
 
-def convert_gjw(gjw_path, output_filename, format="HDF"):
+def convert_gjw(gjw_path, output_filename):
     """
     Parameters
     ----------
@@ -101,7 +101,8 @@ def convert_gjw(gjw_path, output_filename, format="HDF"):
     #clear dataframe & add column headers
     df = pd.DataFrame(columns=[ACTIVE_COLUMN_NAME,REACTIVE_COLUMN_NAME])
     found = False
-    for current_dir, dirs_in_current_dir, files in os.walk(gjw_path):
+    for current_dir, _, files in os.walk(gjw_path):
+        #unused second parameter of for dirs_in_current_dir
         if current_dir.find('.git')!=-1 or current_dir.find('.ipynb') != -1:
             #print( 'Skipping ', current_dir)
             continue
