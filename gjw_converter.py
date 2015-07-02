@@ -46,7 +46,7 @@ filename_suffix_mapping = {
 
 # DataFrame column names
 TIMESTAMP_COLUMN_NAME = "timestamp"
-ACTIVE_COLUMN_NAME = "VA"
+ACTIVE_COLUMN_NAME = "active"
 REACTIVE_COLUMN_NAME = "reactive"
 
 type_column_mapping = {
