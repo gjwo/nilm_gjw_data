@@ -21,7 +21,7 @@ ED01013:
     #upper_limit: 10000
     #lower_limit: 0
   - physical_quantity: power   #power real fine - power granularity  1 Second (no data if no change)
-    type: apparent   # active (real power), reactive or apparent?
+    type: active   # active (real power), reactive or apparent?
     upper_limit: 10000
     lower_limit: 0
   - physical_quantity: power   #power reactive standard granularity  1 Second (no data if no change)
