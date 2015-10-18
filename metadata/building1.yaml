@@ -1106,6 +1106,16 @@ appliances:
   nominal_consumption: {on_power: 11}
   components:
   - type: compact fluorescent lamp
+- original_name: Thecus_N4310
+  description: LAN connected, intellegent NAS and media server with 2 drives in RAID 1 configuration
+  type: server computer
+  instance: 2
+  room: bedroom,4
+  meters: [1]
+  nominal_consumption: {on_power: 20}
+  year_of_purchase: 2015
+  dates_active:
+  - {start: '2015-08-24T12:00:00+01:00'}
 
  
 #
