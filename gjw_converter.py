@@ -117,7 +117,7 @@ def convert_gjw(gjw_path, output_filename):
             # process any .CSV files found
             found = True
             ds = iso_date_re.search(items).group()
-            print( 'found files for date:', ds,end=" ")
+            # print( 'found files for date:', ds,end=" ")
             # found files to process
             df1 = _read_file_pair(current_dir,ds) # read two csv files into a dataframe    
             df = pd.concat([df,df1]) # concatenate the results into one long dataframe
@@ -170,7 +170,9 @@ def _read_file_pair(cdir,ds):
     df3 = pd.merge(df1,df2,on=TIMESTAMP_COLUMN_NAME, how='outer') #merge the two column types into 1 frame
     df3.fillna(value=0, inplace=True) # may need to enter initial entries to reactive sequence
     #_summarise_dataframe(df3,'return from merge and fillna)
-    print(df3[TIMESTAMP_COLUMN_NAME].head(1),"to",df3[TIMESTAMP_COLUMN_NAME].tail(1)) #print first and last entries
+    first_ts = pd.Timestamp(df3[TIMESTAMP_COLUMN_NAME][0])
+    last_ts = pd.Timestamp(df3[TIMESTAMP_COLUMN_NAME][df3.index[-1]])
+    print(first_ts,"to",last_ts) #print first and last entries
     return df3
 
 def _prepare_data_for_toolkit(df):
@@ -189,7 +191,7 @@ def _prepare_data_for_toolkit(df):
 
 def _summarise_dataframe(df,loc):
     print(df.head(4))
-    print("...", len(df.index),"rows at", loc)
+    print("...", len(df.index),"rows", loc)
     print (df.tail(4))
     
 def main():
